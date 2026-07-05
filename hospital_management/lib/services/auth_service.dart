@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:hospital_management/core/network/dio_client.dart';
 import '../core/constants/api_constants.dart';
-import '../core/network/dio_client.dart';
 import '../models/auth_response_model.dart';
 
 class AuthService {
@@ -15,7 +15,7 @@ class AuthService {
   }) async {
     try {
       final response = await _dio.post(
-        ApiConstants.register,
+        AppConstants.register,
         data: {
           "name": name,
           "userName": userName,
@@ -43,7 +43,7 @@ class AuthService {
   }) async {
     try {
       final response = await _dio.post(
-        ApiConstants.login,
+        AppConstants.login,
         data: {
           "userName": userName,
           "password": password,

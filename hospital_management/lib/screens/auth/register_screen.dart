@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management/core/constants/user_roles.dart';
+import 'package:hospital_management/screens/admin/admin_dashboard.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants/api_constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/custom_text_field.dart';
-import '../admin/admin_dashboard.dart';
 import '../doctor/doctor_profile.dart';
 import '../patient/patient_page.dart';
 import 'login_screen.dart';
@@ -69,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Widget destination;
     switch (role?.toLowerCase()) {
       case UserRoles.admin:
-        destination = const AdminDashboard();
+        destination = const DashboardScreen();
         break;
       case UserRoles.doctor:
         destination = const DoctorProfile();
@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 CustomTextField(
                   controller: _nameCtrl,
                   hint: "Full Name",
-                  icon: Icons.person_outline,
+                  prefixIcon: Icons.person_outline,
                   keyboardType: TextInputType.name,
                   validator: (v) =>
                       v == null || v.isEmpty ? "Enter your name" : null,
@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 CustomTextField(
                   controller: _userNameCtrl,
                   hint: "Email / Username",
-                  icon: Icons.email_outlined,
+                  prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   validator: (v) =>
                       v == null || v.isEmpty ? "Enter username" : null,
@@ -147,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 CustomTextField(
                   controller: _passwordCtrl,
                   hint: "Password",
-                  icon: Icons.lock_outline,
+                  prefixIcon: Icons.lock_outline,
                   obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 CustomTextField(
                   controller: _confirmPasswordCtrl,
                   hint: "Confirm Password",
-                  icon: Icons.lock_reset_outlined,
+                  prefixIcon: Icons.lock_reset_outlined,
                   obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(

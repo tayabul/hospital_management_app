@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management/core/constants/user_roles.dart';
 import 'package:provider/provider.dart';
-import '../core/constants/api_constants.dart';
 import '../providers/auth_provider.dart';
 import 'auth/login_screen.dart';
 import 'admin/admin_dashboard.dart';
@@ -25,6 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await authProvider.checkLoginStatus();
 
+    await Future.delayed(const Duration(milliseconds: 300));
+    await authProvider.checkLoginStatus();
+    
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
@@ -43,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Widget destination;
     switch (role?.toLowerCase()) {
       case UserRoles.admin:
-        destination = const AdminDashboard();
+        destination = const DashboardScreen();
         break;
       case UserRoles.doctor:
         destination = const DoctorProfile();

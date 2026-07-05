@@ -1,7 +1,8 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import '../constants/api_constants.dart';
 
-class SharedPrefHelper {
+import 'package:hospital_management/core/constants/api_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class PrefHelper {
   static SharedPreferences? _prefs;
 
   // Initialize
@@ -9,58 +10,70 @@ class SharedPrefHelper {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
-  // Save Auth Data
-  static Future<void> saveAuthData({
-    required String token,
+  static SharedPreferences get _instance {
+    if (_prefs == null) {
+      throw Exception(
+        'PrefHelper not initialized. Call PrefHelper.init() first.',
+      );
+    }
+    return _prefs!;
+  }
+
+  //==================== SAVE LOGIN DATA ====================//
+
+  static Future<void> saveLoginState({
+    required bool isLoggedIn,
+    required String email,
     required String name,
-    required String userName,
-    required String role,
+    required String token,
+    String role = '',
   }) async {
-    await init();
-    await _prefs!.setString(StorageKeys.token, token);
-    await _prefs!.setString(StorageKeys.name, name);
-    await _prefs!.setString(StorageKeys.userName, userName);
-    await _prefs!.setString(StorageKeys.role, role);
-    await _prefs!.setBool(StorageKeys.isLoggedIn, true);
+    await _instance.setBool(AppConstants.keyIsLoggedIn, isLoggedIn);
+    await _instance.setString(AppConstants.keyAdminEmail, email);
+    await _instance.setString(AppConstants.keyAdminName, name);
+    await _instance.setString(AppConstants.keyAuthToken, token);
+    await _instance.setString(AppConstants.keyRole, role);
   }
 
-  // Get Token
-  static Future<String?> getToken() async {
-    await init();
-    return _prefs!.getString(StorageKeys.token);
-  }
+  //==================== GETTERS ====================//
 
-   // Get Name
-  static Future<String?> getName() async {
-    await init();
-    return _prefs!.getString(StorageKeys.name);
-  }
+  static bool get isLoggedIn =>
+      _instance.getBool(AppConstants.keyIsLoggedIn) ?? false;
 
-  // Get UserName
-  static Future<String?> getUserName() async {
-    await init();
-    return _prefs!.getString(StorageKeys.userName);
-  }
+  static String get adminEmail =>
+      _instance.getString(AppConstants.keyAdminEmail) ?? '';
 
-  // Get Role
-  static Future<String?> getRole() async {
-    await init();
-    return _prefs!.getString(StorageKeys.role);
-  }
+  static String get adminName =>
+      _instance.getString(AppConstants.keyAdminName) ?? '';
 
-  // Check Login Status
-  static Future<bool> isLoggedIn() async {
-    await init();
-    return _prefs!.getBool(StorageKeys.isLoggedIn) ?? false;
-  }
+  static String get token =>
+      _instance.getString(AppConstants.keyAuthToken) ?? '';
 
-  // Clear Data (Logout)
+  static String get role =>
+      _instance.getString(AppConstants.keyRole) ?? '';
+
+  // Optional aliases (আগের কোডের compatibility-এর জন্য)
+
+  static String get authToken => token;
+
+  static String get userName => adminEmail;
+
+  static String get name => adminName;
+
+  //==================== CLEAR ====================//
+
   static Future<void> clearAuthData() async {
-    await init();
-    await _prefs!.remove(StorageKeys.token);
-    await _prefs!.remove(StorageKeys.name);
-    await _prefs!.remove(StorageKeys.userName);
-    await _prefs!.remove(StorageKeys.role);
-    await _prefs!.setBool(StorageKeys.isLoggedIn, false);
+    await _instance.remove(AppConstants.keyIsLoggedIn);
+    await _instance.remove(AppConstants.keyAdminEmail);
+    await _instance.remove(AppConstants.keyAdminName);
+    await _instance.remove(AppConstants.keyAuthToken);
+    await _instance.remove(AppConstants.keyRole);
   }
+
+  static Future<void> clearAll() async {
+    //await _instance.clear();
+    await clearAuthData();
+  }
+
+  
 }

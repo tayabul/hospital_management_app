@@ -1,51 +1,74 @@
 import 'package:dio/dio.dart';
-import '../constants/api_constants.dart';
-import '../storage/shared_pref_helper.dart';
+import 'package:hospital_management/core/constants/api_constants.dart';
+import 'package:hospital_management/core/storage/shared_pref_helper.dart';
 
 class DioClient {
+  DioClient._internal();
+
   static final DioClient _instance = DioClient._internal();
+
   factory DioClient() => _instance;
 
-  late Dio dio;
+  late final Dio dio = _createDio();
 
-  DioClient._internal() {
-    dio = Dio(
+  Dio _createDio() {
+    final dio = Dio(
       BaseOptions(
-        baseUrl: ApiConstants.baseUrl,
-        connectTimeout: const Duration(milliseconds: ApiConstants.connectionTimeout),
-        receiveTimeout: const Duration(milliseconds: ApiConstants.receiveTimeout),
-        headers: {
+        baseUrl: AppConstants.baseUrl,
+        connectTimeout: Duration(
+          milliseconds: AppConstants.connectTimeout,
+        ),
+        receiveTimeout: Duration(
+          milliseconds: AppConstants.receiveTimeout,
+        ),
+        headers: const {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
       ),
     );
 
-    // Add interceptors
     dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          // Attach token automatically if available
-          final token = await SharedPrefHelper.getToken();
-          if (token != null && token.isNotEmpty) {
+        onRequest: (options, handler) {
+          final token = PrefHelper.token;
+
+          if (token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
-          return handler.next(options);
+
+          print(
+            'REQUEST[${options.method}] => ${options.baseUrl}${options.path}',
+          );
+          print('Headers: ${options.headers}');
+          print('Data: ${options.data}');
+
+          handler.next(options);
         },
         onResponse: (response, handler) {
-          return handler.next(response);
+          print(
+            'RESPONSE[${response.statusCode}] => ${response.requestOptions.path}',
+          );
+          print(response.data);
+
+          handler.next(response);
         },
         onError: (DioException e, handler) {
-          // Handle 401 - token expired
+          print(
+            'ERROR[${e.response?.statusCode}] => ${e.requestOptions.path}',
+          );
+          print(e.message);
+
           if (e.response?.statusCode == 401) {
-            SharedPrefHelper.clearAuthData();
+            clearAuthToken();
+            PrefHelper.clearAuthData();
           }
-          return handler.next(e);
+
+          handler.next(e);
         },
       ),
     );
 
-    // Logging interceptor (for debugging)
     dio.interceptors.add(
       LogInterceptor(
         request: true,
@@ -54,5 +77,17 @@ class DioClient {
         error: true,
       ),
     );
+
+    return dio;
+  }
+
+  /// Set token after login
+  static void setAuthToken(String token) {
+    _instance.dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  /// Remove token after logout
+  static void clearAuthToken() {
+    _instance.dio.options.headers.remove('Authorization');
   }
 }

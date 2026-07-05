@@ -1,12 +1,16 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/storage/shared_pref_helper.dart';
 import 'providers/auth_provider.dart';
-import 'screens/splash_screen.dart';
+import 'providers/doctor_provider.dart';
+import 'providers/patient_provider.dart';
+import 'providers/theme_provider.dart';
+import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefHelper.init();
+  await PrefHelper.init();
   runApp(const MyApp());
 }
 
@@ -18,21 +22,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => PatientProvider()),
+        ChangeNotifierProvider(create: (_) => DoctorProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: MaterialApp(
-        title: 'Hospital Management',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(
-            elevation: 0,
-            centerTitle: true,
-          ),
-          useMaterial3: true,
-        ),
-        home: const SplashScreen(),
-      ),
+      child: const App(), 
     );
   }
 }

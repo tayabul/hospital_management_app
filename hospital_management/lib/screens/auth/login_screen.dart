@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management/core/constants/user_roles.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants/api_constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/custom_text_field.dart';
 import '../admin/admin_dashboard.dart';
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget destination;
     switch (role?.toLowerCase()) {
       case UserRoles.admin:
-        destination = const AdminDashboard();
+        destination = const DashboardScreen();
         break;
       case UserRoles.doctor:
         destination = const DoctorProfile();
@@ -73,6 +73,35 @@ class _LoginScreenState extends State<LoginScreen> {
       MaterialPageRoute(builder: (_) => destination),
     );
   }
+
+  // void _navigateByRole(String? role) {
+  //   Widget destination;
+
+  //   switch (role?.toLowerCase()) {
+  //     case "admin":
+  //       destination = const DashboardScreen();
+  //       break;
+
+  //     case "doctor":
+  //       destination = const DoctorProfile();
+  //       break;
+
+  //     case "receptionist":
+  //       destination = const PatientPage();
+  //       break;
+
+  //     default:
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(const SnackBar(content: Text("Unknown user role")));
+  //       return;
+  //   }
+
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (_) => destination),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   controller: _userNameCtrl,
                   hint: "Email / Username",
-                  icon: Icons.email,
+                  prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                   validator: (v) =>
                       v == null || v.isEmpty ? "Enter username" : null,
@@ -114,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   controller: _passwordCtrl,
                   hint: "Password",
-                  icon: Icons.lock,
+                  prefixIcon: Icons.lock,
                   obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
