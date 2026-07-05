@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:hospital_management/models/patient_model.dart';
 import 'package:hospital_management/repositories/patient_repository.dart';
@@ -13,12 +12,16 @@ class PatientProvider extends ChangeNotifier {
   String? _errorMessage;
   String _searchQuery = '';
 
-  List<PatientModel> get patients {
+    List<PatientModel> get patients {
     if (_searchQuery.isEmpty) return _patients;
+
+    final query = _searchQuery.toLowerCase().trim();
+
     return _patients.where((p) =>
-      p.fullName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-      p.email.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-      p.phone.contains(_searchQuery)
+      p.fullName.toLowerCase().contains(query) ||
+      (p.email.toLowerCase().contains(query)) ||
+      (p.phone.toLowerCase().contains(query)) ||   
+      (p.address.toLowerCase().contains(query))   
     ).toList();
   }
 

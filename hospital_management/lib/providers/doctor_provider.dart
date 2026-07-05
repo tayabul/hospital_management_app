@@ -1,5 +1,3 @@
-// lib/providers/doctor_provider.dart
-
 import 'package:flutter/foundation.dart';
 import 'package:hospital_management/models/doctor_model.dart';
 import 'package:hospital_management/repositories/doctor_repository.dart';
@@ -14,12 +12,14 @@ class DoctorProvider extends ChangeNotifier {
   String? _errorMessage;
   String _searchQuery = '';
 
+// ─── GETTER WITH SEARCH ─────────────────────────────────────────────────
   List<DoctorModel> get doctors {
     if (_searchQuery.isEmpty) return _doctors;
     return _doctors.where((d) =>
       d.fullName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
       d.specialty.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-      d.email.toLowerCase().contains(_searchQuery.toLowerCase())
+      d.email.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+      d.phone.toLowerCase().contains(_searchQuery.toLowerCase())
     ).toList();
   }
 

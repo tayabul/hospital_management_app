@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
-import 'package:hospital_management/core/constants/api_constants.dart';
-import '../../core/network/dio_client.dart';
-import '../../core/utils/api_exception.dart';
-import '../models/doctor_model.dart';
+ import 'package:dio/dio.dart';
+ import 'package:hospital_management/core/constants/api_constants.dart';
+ import '../../core/network/dio_client.dart';
+ import '../../core/utils/api_exception.dart';
+ import '../models/doctor_model.dart';
 
 class DoctorRepository {
   final Dio _dio = DioClient().dio;
@@ -69,3 +69,24 @@ class DoctorRepository {
     }
   }
 }
+
+
+
+// Future<void> updateDoctor(DoctorModel doctor) async {
+//   try {
+//     final response = await _dio.put(
+//       '${AppConstants.doctorsEndpoint}/${doctor.doctorID}',
+//       data: doctor.toJson(),
+//     );
+//     print('Update Status: ${response.statusCode}');
+//   } on DioException catch (e) {
+//     if (e.response?.statusCode == 405) {
+//       await _dio.patch(
+//         '${AppConstants.doctorsEndpoint}/${doctor.doctorID}',
+//         data: doctor.toJson(),
+//       );
+//     } else {
+//       throw ApiException.fromDioError(e);
+//     }
+//   }
+// }
