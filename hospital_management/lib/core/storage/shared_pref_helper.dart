@@ -1,4 +1,3 @@
-
 import 'package:hospital_management/core/constants/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,8 +18,7 @@ class PrefHelper {
     return _prefs!;
   }
 
-  //==================== SAVE LOGIN DATA ====================//
-
+  //save logout data
   static Future<void> saveLoginState({
     required bool isLoggedIn,
     required String email,
@@ -35,7 +33,7 @@ class PrefHelper {
     await _instance.setString(AppConstants.keyRole, role);
   }
 
-  //==================== GETTERS ====================//
+  // getter
 
   static bool get isLoggedIn =>
       _instance.getBool(AppConstants.keyIsLoggedIn) ?? false;
@@ -52,16 +50,12 @@ class PrefHelper {
   static String get role =>
       _instance.getString(AppConstants.keyRole) ?? '';
 
-  // Optional aliases (আগের কোডের compatibility-এর জন্য)
 
-  static String get authToken => token;
+  // static String get authToken => token;
+  // static String get userName => adminEmail;
+  // static String get name => adminName;
 
-  static String get userName => adminEmail;
-
-  static String get name => adminName;
-
-  //==================== CLEAR ====================//
-
+  // clear
   static Future<void> clearAuthData() async {
     await _instance.remove(AppConstants.keyIsLoggedIn);
     await _instance.remove(AppConstants.keyAdminEmail);

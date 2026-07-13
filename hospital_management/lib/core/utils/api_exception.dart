@@ -1,5 +1,3 @@
-// lib/core/utils/api_exception.dart
-
 import 'package:dio/dio.dart';
 
 class ApiException implements Exception {

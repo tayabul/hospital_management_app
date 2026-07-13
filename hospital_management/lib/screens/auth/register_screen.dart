@@ -186,8 +186,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (v) {
                     if (v == null || v.isEmpty) return "Confirm your password";
                     if (v.length < 6) return "Password must be 6+ chars";
-                    if (v != _passwordCtrl.text)
+                    if (v != _passwordCtrl.text) {
                       return "Passwords do not match";
+                    }
                     return null;
                   },
                 ),
@@ -201,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: DropdownButtonFormField<String>(
-                    value: _selectedRole,
+                    initialValue: _selectedRole,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       icon: Icon(Icons.badge_outlined, color: Colors.teal),

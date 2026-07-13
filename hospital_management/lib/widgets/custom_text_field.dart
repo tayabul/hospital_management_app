@@ -1,5 +1,3 @@
-// lib/ui/widgets/common/custom_text_field.dart
-
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 

@@ -81,12 +81,12 @@ class DioClient {
     return dio;
   }
 
-  /// Set token after login
+  // Set token after login
   static void setAuthToken(String token) {
     _instance.dio.options.headers['Authorization'] = 'Bearer $token';
   }
 
-  /// Remove token after logout
+  // Remove token after logout
   static void clearAuthToken() {
     _instance.dio.options.headers.remove('Authorization');
   }

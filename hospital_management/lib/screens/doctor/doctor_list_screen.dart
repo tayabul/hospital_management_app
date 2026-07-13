@@ -34,7 +34,7 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
       appBar: AppBar(title: const Text('Doctor List')),
       body: Column(
         children: [
-          // ==================== Search Bar ====================
+          // Search Bar
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: TextField(
@@ -64,7 +64,7 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
             ),
           ),
 
-          // ==================== Doctor List ====================
+          // Doctor List 
           Expanded(
             child: provider.isLoading
                 ? const Center(child: CircularProgressIndicator())

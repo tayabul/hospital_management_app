@@ -74,35 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // void _navigateByRole(String? role) {
-  //   Widget destination;
-
-  //   switch (role?.toLowerCase()) {
-  //     case "admin":
-  //       destination = const DashboardScreen();
-  //       break;
-
-  //     case "doctor":
-  //       destination = const DoctorProfile();
-  //       break;
-
-  //     case "receptionist":
-  //       destination = const PatientPage();
-  //       break;
-
-  //     default:
-  //       ScaffoldMessenger.of(
-  //         context,
-  //       ).showSnackBar(const SnackBar(content: Text("Unknown user role")));
-  //       return;
-  //   }
-
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(builder: (_) => destination),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);

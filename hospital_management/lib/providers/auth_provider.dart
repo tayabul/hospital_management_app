@@ -23,7 +23,7 @@ class AuthProvider extends ChangeNotifier {
   String? _role;
   String? _errorMessage;
 
-  //==================== Getters ====================//
+  // Getters 
 
   AuthStatus get status => _status;
 
@@ -37,16 +37,14 @@ class AuthProvider extends ChangeNotifier {
   String? get role => _role;
 
   String get adminName => _name ?? '';
-
   String get adminEmail => _userName ?? '';
-
   String? get errorMessage => _errorMessage;
 
   AuthProvider() {
     //checkLoginStatus();
   }
 
-  //==================== CHECK LOGIN ====================//
+  // CHECK LOGIN 
 
 Future<bool> checkLoginStatus({bool notify = false}) async {
   _token = PrefHelper.token;
@@ -68,7 +66,7 @@ Future<bool> checkLoginStatus({bool notify = false}) async {
   return isAuthenticated;
 }
 
-  //==================== REGISTER ====================//
+  // REGISTER 
 
   Future<bool> register({
     required String name,
@@ -99,7 +97,7 @@ Future<bool> checkLoginStatus({bool notify = false}) async {
     }
   }
 
-  //==================== LOGIN ====================//
+  // LOGIN 
 
   Future<bool> login({
     required String userName,
@@ -126,7 +124,7 @@ Future<bool> checkLoginStatus({bool notify = false}) async {
     }
   }
 
-  //==================== SAVE USER ====================//
+  // SAVE USER 
 
   Future<void> _saveUser(AuthResponseModel response) async {
     _token = response.token;
@@ -148,7 +146,7 @@ Future<bool> checkLoginStatus({bool notify = false}) async {
     notifyListeners();
   }
 
-  //==================== LOGOUT ====================//
+  // LOGOUT 
 
   Future<void> logout() async {
     _token = null;

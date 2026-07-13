@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:hospital_management/screens/appointment/appointmentListScreen.dart';
 import 'package:hospital_management/screens/doctor/doctor_list_screen.dart';
+import 'package:hospital_management/screens/medicine/MedicineListScreen.dart';
 import 'package:hospital_management/screens/patient/patient_list_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
@@ -16,6 +17,8 @@ class DashboardScreen extends StatelessWidget {
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
     final theme = Theme.of(context);
+
+    final role = auth.role?.toLowerCase() ?? '';
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -67,14 +70,14 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
 
-      // ==================== Full Drawer ====================
+      // ==================== Clean & Role Based Drawer ====================
       drawer: Drawer(
         backgroundColor: theme.scaffoldBackgroundColor,
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(auth.name ?? "Admin"),
-              accountEmail: Text("${auth.userName ?? ''} • ${auth.role ?? 'Admin'}"),
+              accountName: Text(auth.name ?? "User"),
+              accountEmail: Text("${auth.userName ?? ''} • ${auth.role ?? 'User'}"),
               currentAccountPicture: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.admin_panel_settings, size: 40, color: Colors.deepPurple),
@@ -94,39 +97,40 @@ class DashboardScreen extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const PatientListScreen()));
             }),
 
-            _drawerItem(Icons.medication_outlined, "Medicine", () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Medicine Module - Coming Soon")),
-              );
-            }),
+            // Medicine - Admin & Doctor দেখবে
+            if (role == 'admin' || role == 'doctor')
+              _drawerItem(Icons.medication_outlined, "Medicine", () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const MedicineListScreen()));
+              }),
 
+            // Appointments - সব রোলই দেখবে
             _drawerItem(Icons.calendar_today_outlined, "Appointments", () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Appointments - Coming Soon")),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const AppointmentListScreen()));
             }),
 
-            _drawerItem(Icons.inventory_2_outlined, "Inventory", () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Inventory - Coming Soon")),
-              );
-            }),
+            // Inventory - শুধু Admin
+            if (role == 'admin')
+              _drawerItem(Icons.inventory_2_outlined, "Inventory", () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Inventory - Coming Soon")),
+                );
+              }),
 
             const Divider(),
 
             _drawerItem(Icons.settings_outlined, "Settings", () {
               Navigator.pop(context);
-              // Settings screen যোগ করতে পারবেন পরে
+              // Settings screen পরে যোগ করবে
             }),
 
             const Spacer(),
 
             // Logout
             _drawerItem(Icons.logout, "Logout", () async {
-              Navigator.pop(context); // Close drawer
+              Navigator.pop(context);
 
               final confirm = await showDialog<bool>(
                 context: context,
@@ -159,7 +163,7 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
 
-      // Body (আগের মতোই রাখা হয়েছে)
+      // Body remains same...
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -227,7 +231,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  // Drawer Item
+  // Drawer Item Helper
   Widget _drawerItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon),
@@ -236,7 +240,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  // Stat Card
+  // Stat Card & Doctor Card (আগের মতোই)
   Widget _statCard(BuildContext context, String title, String value, IconData icon, Color accentColor) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -266,7 +270,6 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  // Doctor Card
   Widget _doctorCard(BuildContext context, String name, String specialty, String time, Color accentColor) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -304,8 +307,3 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

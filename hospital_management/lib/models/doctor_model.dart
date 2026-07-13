@@ -1,4 +1,3 @@
-// lib/data/models/doctor_model.dart
 
 class DoctorModel {
   final int? doctorID;

@@ -1,39 +1,37 @@
 
 class AppConstants {
-  //==================== BASE URL ====================//
+  // base url
+  static const String baseUrl = 'http://192.168.0.105';
 
-  static const String baseUrl = 'http://www.tayab.hospitalms-api.com/';
-
-  //==================== AUTH ENDPOINTS ====================//
-
+  // auth end points
   static const String register = '/api/Auth/register';
   static const String login = '/api/Auth/login';
 
-  //==================== API ENDPOINTS ====================//
-
+  //  api doctor endpoints
   static const String doctorsEndpoint = '/api/Doctors';
+
+  // patient endpoints
   static const String patientsEndpoint = '/api/Patients';
 
-  // ভবিষ্যতে আরও যোগ করতে পারো
-  // static const String appointmentsEndpoint = '/api/Appointments';
-  // static const String medicinesEndpoint = '/api/Medicines';
+  // appointment endpoints
+  static const String appointmentsEndpoint = '/api/Appointments';
 
-  //==================== SHARED PREFERENCES KEYS ====================//
+   // medicine endpoints
+  static const String medicinesEndpoint = '/api/Medicines';
 
+  // shared preperanfe key
   static const String keyAuthToken = 'auth_token';
   static const String keyAdminName = 'admin_name';
   static const String keyAdminEmail = 'admin_email';
   static const String keyRole = 'user_role';
   static const String keyIsLoggedIn = 'is_logged_in';
 
-  //==================== USER ROLES ====================//
-
+  // user role
   static const String roleAdmin = 'admin';
   static const String roleDoctor = 'doctor';
   static const String roleReceptionist = 'receptionist';
 
-  //==================== NETWORK ====================//
-
+  // network
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
 
